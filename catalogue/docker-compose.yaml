@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  boot:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE: casestudy
+      - MYSQL_USER: myuser
+      - MYSQL_PASSWORD: mypass123
+    volumes:
+      - "./mysql-commands.sql:/docker-entrypoint-initdb.d"
+    ports:
+      - "6033:3066"
+    restart: always
+	
