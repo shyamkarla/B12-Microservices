@@ -1,23 +1,33 @@
 version: "3.8"
 services:
+  eureka:
+    build:
+      context: .
+      dockerfile: Dockerfile-eureka
+    ports:
+      - "8761:8761"
+    restart: on-failure
   boot:
     build:
       context: .
       dockerfile: Dockerfile-dev
+   # environment:
+    #  - SPRING_DATASOURCE_URL=jdbc:mysql://docker-mysql:3306/casestudy?autoReconnect=true&useSSL=false
     ports:
-      - "8081:8081"
+      - "8090:8090"
     restart: on-failure
     depends_on:
-      - db
-  db:
+      - eureka
+      - docker-mysql
+  docker-mysql:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE: casestudy
-      - MYSQL_USER: myuser
-      - MYSQL_PASSWORD: mypass123
+     - MYSQL_DATABASE=casestudy
+     - MYSQL_USER=myuser
+     - MYSQL_PASSWORD=mypass123
+     - MYSQL_ROOT_PASSWORD=password
     volumes:
-      - "./mysql-commands.sql:/docker-entrypoint-initdb.d"
+      - "./sql:/docker-entrypoint-initdb.d"
     ports:
-      - "6033:3066"
+      - "6033:3306"
     restart: always
-	

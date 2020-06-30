@@ -1,6 +1,10 @@
 package com.ms.CatalogueService.Entities;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name ="product")
@@ -23,15 +27,15 @@ public class Catalogue {
         this.id = id;
     }
 
-    @OneToOne(mappedBy = "catalogue")
-    private CatalogueReviews catalogueReviews;
+    @OneToMany(cascade=CascadeType.ALL,mappedBy = "catalogue")
+    private List<CatalogueReviews> catalogueReviewsList;
 
-    public CatalogueReviews getCatalogueReviews() {
-        return catalogueReviews;
+    public List<CatalogueReviews> getCatalogueReviews() {
+        return catalogueReviewsList;
     }
 
-    public void setCatalogueReviews(CatalogueReviews catalogueReviews) {
-        this.catalogueReviews = catalogueReviews;
+    public void setCatalogueReviews(List<CatalogueReviews> catalogueReviewsList) {
+        this.catalogueReviewsList = catalogueReviewsList;
     }
 
     public String getProductName() {

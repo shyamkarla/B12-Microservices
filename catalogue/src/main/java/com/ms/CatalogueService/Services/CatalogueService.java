@@ -53,38 +53,10 @@ public class CatalogueService {
         }
         Catalogue catalogue = catalogueById.get();
         catalogue.setProductName(updatedProduct.getProductName());
+        catalogue.setProductDescription(updatedProduct.getProductDescription());
         return catalogueRepository.save(catalogue);
 
     }
-
-////other service methods would consume other microservices
-/*
-    public Catalogue getProductPrice(int id){
-        Catalogue catalogue = repository.findById(id).get();
-
-
-        return catalogue;
-    }
-
-    public Catalogue getProductOffer(int id){
-        Catalogue catalogue = repository.findById(id).get();
-
-        return catalogue;
-    }
-
-    public List<Catalogue> filterProducts(Filters filter){
-        List<Catalogue> catalogue = (List<Catalogue>) repository.findAll();
-
-        return catalogue;
-    }
-
-    public Catalogue isAvailable(int id){
-        Catalogue catalogue = repository.findById(id).get();
-
-        return catalogue;
-    }
-
- */
 
 }
 

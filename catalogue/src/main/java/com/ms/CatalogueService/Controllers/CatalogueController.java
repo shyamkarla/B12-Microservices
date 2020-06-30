@@ -133,7 +133,7 @@ public class CatalogueController {
     	Catalogue product = catalogueService.getProduct(id);
     	RestTemplate restTemplate = restTemplateBuilder.build();
     	
-    	//using Eureka Server to get Inventory app
+    	//using Eureka Server to get Price service
     	InstanceInfo info = eurekaClient.getNextServerFromEureka("price-service", false);
     	String baseURL = info.getHomePageUrl();
     	baseURL = baseURL+"price/"+id;

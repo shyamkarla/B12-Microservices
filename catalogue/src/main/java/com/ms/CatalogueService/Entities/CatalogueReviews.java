@@ -3,6 +3,8 @@ package com.ms.CatalogueService.Entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Cascade;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +17,7 @@ public class CatalogueReviews {
     private int reviewId;
 
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="product_id", referencedColumnName = "id")
     private Catalogue catalogue;
 
@@ -49,13 +51,14 @@ public class CatalogueReviews {
         this.productRatings = productRatings;
     }
 
+	public Catalogue getCatalogue() {
+		return catalogue;
+	}
 
-    public Catalogue getCatalogue() {
-        return catalogue;
-    }
+	public void setCatalogue(Catalogue catalogue) {
+		this.catalogue = catalogue;
+	}
 
-    public void setCatalogue(Catalogue catalogue) {
-        this.catalogue = catalogue;
-    }
+
 
 }
