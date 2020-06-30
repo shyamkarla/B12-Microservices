@@ -26,6 +26,10 @@ public class CatalogueService {
 
     public Catalogue getProduct(int id){
         Catalogue catalogue = catalogueRepository.findById(id).get();
+        
+        if(catalogue==null) {
+            throw new NoProductFoundException("Product ID not Found "+id);
+        }
         return catalogue;
     }
 
