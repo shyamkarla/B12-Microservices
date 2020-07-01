@@ -27,6 +27,15 @@ public class CatalogueReviews {
     @Column(name = "product_ratings")
     private int productRatings;
 
+    public CatalogueReviews(){
+
+    }
+
+    public CatalogueReviews(int reviewId, int productRatings, String productReview) {
+    this.reviewId = reviewId;
+    this.productRatings = productRatings;
+    this.productReview = productReview;
+    }
     public int getReviewId() {
         return reviewId;
     }

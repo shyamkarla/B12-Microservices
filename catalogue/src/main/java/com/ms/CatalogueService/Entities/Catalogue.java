@@ -18,6 +18,16 @@ public class Catalogue {
 
     @Column(name = "product_description")
     private String productDescription;
+    
+    public Catalogue(){
+
+    }
+
+    public Catalogue(int id, String productName, String productDescription){
+    this.id= id;
+    this.productName = productName;
+    this.productDescription = productDescription;
+    }
 
     public int getId() {
         return id;
