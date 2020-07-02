@@ -8,7 +8,7 @@ import lombok.Data;
 public class OfferResponse {
 
 	private long offerId;
-	private float offerPrice;
+	private float offerPercentage;
 	private String offerCategory;
 	private LocalDate validUpto;
 	private LocalDate ValidFrom;

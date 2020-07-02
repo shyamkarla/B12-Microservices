@@ -29,7 +29,6 @@ public class PriceServiceTest {
 		price.setOfferId(12L);
 		price.setProductId(12L);
 		price.setProductPrice(1200f);
-		price.setDiscountPercentage(25f);
 	}
 
     @Test

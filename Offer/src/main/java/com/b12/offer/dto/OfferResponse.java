@@ -12,13 +12,15 @@ public class OfferResponse {
 	@JsonInclude(Include.NON_NULL)
 	private Long offerId;
 	@JsonInclude(Include.NON_NULL)
-	private Float offerPrice;
+	private Float offerPercentage;
 	@JsonInclude(Include.NON_NULL)
 	private String offerCategory;
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(content = Include.NON_NULL)
 	private LocalDate validUpto;
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(content = Include.NON_NULL)
 	private LocalDate ValidFrom;
-	private boolean result;
+	@JsonInclude(content = Include.NON_NULL)
+	private Boolean result;
+	@JsonInclude(Include.NON_NULL)
 	private String message;
 }
