@@ -1,5 +1,7 @@
 package com.b12.price.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,9 @@ public class PriceService {
 
 	public Price addPriceDetails(Price price) {
 		return priceRepository.save(price);
+	}
+
+	public List<Price> getAll() {
+		return priceRepository.findAll();
 	}
 }

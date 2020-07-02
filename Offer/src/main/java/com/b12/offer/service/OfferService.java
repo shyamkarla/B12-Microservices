@@ -1,5 +1,7 @@
 package com.b12.offer.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,18 @@ public class OfferService {
 
 	public Offer getOffer(long offerId) {
 		return offerRepository.getOne(offerId);
+	}
+
+	public Offer addOffer(Offer offer) {
+		return offerRepository.save(offer);
+	}
+
+	public List<Offer> getAllOffer() {
+		return offerRepository.findAll();
+	}
+
+	public Offer updateOffer(Offer offer) {
+		return offerRepository.save(offer);
+		
 	}
 }
