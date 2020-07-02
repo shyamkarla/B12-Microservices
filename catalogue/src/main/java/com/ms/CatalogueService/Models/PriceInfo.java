@@ -4,26 +4,27 @@ import com.ms.CatalogueService.Entities.Catalogue;
 
 public class PriceInfo {
 	
-	private double actualPrice;
-	private String offer;
+	private double productPrice;
+	private double discountPercentage;
 	private double discountedPrice;
 	
 	private Catalogue product;
 
-	public double getActualPrice() {
-		return actualPrice;
+
+	public double getProductPrice() {
+		return productPrice;
 	}
 
-	public void setActualPrice(double actualPrice) {
-		this.actualPrice = actualPrice;
+	public void setProductPrice(double productPrice) {
+		this.productPrice = productPrice;
 	}
 
-	public String getOffer() {
-		return offer;
+	public double getDiscountPercentage() {
+		return discountPercentage;
 	}
 
-	public void setOffer(String offer) {
-		this.offer = offer;
+	public void setDiscountPercentage(double discountPercentage) {
+		this.discountPercentage = discountPercentage;
 	}
 
 	public double getDiscountedPrice() {

@@ -133,11 +133,15 @@ public class CatalogueController {
     	Catalogue product = catalogueService.getProduct(id);
     	RestTemplate restTemplate = restTemplateBuilder.build();
     	
+    	System.out.println("URL============== before hit");
     	//using Eureka Server to get Price service
     	InstanceInfo info = eurekaClient.getNextServerFromEureka("price-service", false);
+    	System.out.println("URL============== after hit");
     	String baseURL = info.getHomePageUrl();
-    	baseURL = baseURL+"price/"+id;
+    	baseURL = baseURL+"price-api/price/"+id;
+    	System.out.println("URL==============" +baseURL);
     	PriceInfo priceInfo = restTemplate.getForObject(baseURL, PriceInfo.class);
+    	System.out.println("Response==============" +priceInfo.toString());
     	priceInfo.setProduct(product);
         return priceInfo;
     }
