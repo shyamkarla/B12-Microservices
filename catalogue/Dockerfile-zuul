@@ -1,0 +1,5 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+WORKDIR /data
+ADD ZuulServer-0.0.1-SNAPSHOT.jar ZuulServer.jar
+ENTRYPOINT ["java" ,"-jar" , "ZuulServer.jar"]
