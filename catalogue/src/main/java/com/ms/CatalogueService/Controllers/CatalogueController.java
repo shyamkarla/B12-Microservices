@@ -19,6 +19,8 @@ import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -60,6 +62,9 @@ public class CatalogueController {
     @GetMapping("/products/{id}")
     public Catalogue getProduct(@PathVariable int id){
         Catalogue product = catalogueService.getProduct(id);
+        if(product==null)
+        	throw new NoProductFoundException("Product not Found!");
+        System.out.println("Shruti " +product);
         return product;
     }
 
@@ -105,7 +110,7 @@ public class CatalogueController {
 //other APIs which would consume other microservices
 
     @GetMapping("/products/{id}/availability")
-    public InventoryInfo isAvailable(@PathVariable int id){
+    public ResponseEntity<InventoryInfo> isAvailable(@PathVariable int id){
     
     	Catalogue product = catalogueService.getProduct(id);
     	if(product==null) {
@@ -121,11 +126,14 @@ public class CatalogueController {
     	InventoryInfo inventoryInfo = restTemplate.getForObject(baseURL, InventoryInfo.class);
     	
     	if(inventoryInfo==null) {
-    		throw new ProductOutOfStockException("Product is out of Stock!");
+    		throw new ProductOutOfStockException("Product currently Unavailable!");
+    	
     	}
     	inventoryInfo.setProduct(product);
     	
-        return inventoryInfo;
+        //return inventoryInfo;
+        
+      return new ResponseEntity<InventoryInfo>(inventoryInfo, HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}/price")
@@ -138,7 +146,7 @@ public class CatalogueController {
     	InstanceInfo info = eurekaClient.getNextServerFromEureka("price-service", false);
     	System.out.println("URL============== after hit");
     	String baseURL = info.getHomePageUrl();
-    	baseURL = baseURL+"price-api/price/"+id;
+    	baseURL = baseURL+"/"+id;
     	System.out.println("URL==============" +baseURL);
     	PriceInfo priceInfo = restTemplate.getForObject(baseURL, PriceInfo.class);
     	System.out.println("Response==============" +priceInfo.toString());
