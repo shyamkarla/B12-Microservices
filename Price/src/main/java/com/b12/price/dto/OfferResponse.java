@@ -3,8 +3,10 @@ package com.b12.price.dto;
 import java.time.LocalDate;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(includeFieldNames =true)
 public class OfferResponse {
 
 	private long offerId;

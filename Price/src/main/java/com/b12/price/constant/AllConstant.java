@@ -10,5 +10,6 @@ public class AllConstant {
 	public static final String OFFER_NOT_FOUND = "Unable to get the offer details";
 	public static final String SUCCESS_RESPONSE = "Price details added successfully";
 	public static final String INVALID_PRICE_DETAILS = "Invalid/ Null price details";
+	public static final String DELETE_MESSAGE = "Deleted successfully" ;
 	
 }

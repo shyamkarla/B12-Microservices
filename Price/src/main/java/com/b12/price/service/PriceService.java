@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.b12.price.dto.PriceDTO;
 import com.b12.price.entity.Price;
 import com.b12.price.repo.PriceRepository;
 
@@ -18,11 +19,22 @@ public class PriceService {
 			return priceRepository.getOne(priceId);
 	}
 
-	public Price addPriceDetails(Price price) {
+	public Price addPriceDetails(PriceDTO priceDto) {
+		Price price = new Price();
+		price.setOfferId(priceDto.getOfferId());
+		price.setProductPrice(priceDto.getProductPrice());
 		return priceRepository.save(price);
 	}
 
 	public List<Price> getAll() {
 		return priceRepository.findAll();
+	}
+
+	public Price updatePriceDetails(Price price) {
+		return priceRepository.save(price);
+	}
+
+	public void deletePriceDetails(Long priceId) {
+		priceRepository.deleteById(priceId);
 	}
 }

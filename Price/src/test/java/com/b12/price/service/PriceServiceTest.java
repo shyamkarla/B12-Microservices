@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.b12.price.dto.PriceDTO;
 import com.b12.price.entity.Price;
 import com.b12.price.repo.PriceRepository;
 
@@ -23,12 +24,17 @@ public class PriceServiceTest {
     private PriceService priceService;
 
     static Price price = new Price();
+    
+    static PriceDTO dto = new PriceDTO();
 
 	@BeforeAll
 	public static void init() {
 		price.setOfferId(12L);
 		price.setProductId(12L);
 		price.setProductPrice(1200f);
+		
+		dto.setOfferId(12L);
+		dto.setProductPrice(1200f);
 	}
 
     @Test
@@ -48,7 +54,7 @@ public class PriceServiceTest {
     @Test
     public void testAddPrice() {
     	Mockito.when(priceRepository.save(Mockito.any())).thenReturn(price);
-    	 priceService.addPriceDetails(price);
+    	 priceService.addPriceDetails(dto);
     	assertTrue(true);
     }
 }

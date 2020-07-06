@@ -164,7 +164,7 @@ public class PriceControllerTest {
 		MvcResult result = mockMvc.perform(request).andReturn();
 
 		MockHttpServletResponse response = result.getResponse();
-		String expectedResult = "{\"message\":\"Price details added successfully\"}";
+		String expectedResult = "{\"productId\":12,\"offerId\":12,\"productPrice\":1200.0}";
 
 		assertEquals(expectedResult, response.getContentAsString());
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -182,7 +182,7 @@ public class PriceControllerTest {
 		MvcResult result = mockMvc.perform(request).andReturn();
 
 		MockHttpServletResponse response = result.getResponse();
-		String expectedResult = "{\"priceDetails\":[Price(productId=12, offerId=12, productPrice=1200.0)]}";
+		String expectedResult = "{\"priceDetails\":[{\"productId\":12,\"offerId\":12,\"productPrice\":1200.0}]}";
 		assertEquals(expectedResult, response.getContentAsString());
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 

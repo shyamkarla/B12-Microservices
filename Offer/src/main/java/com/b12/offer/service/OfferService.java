@@ -30,4 +30,8 @@ public class OfferService {
 		return offerRepository.save(offer);
 		
 	}
+
+	public void deleteOffer(long offerId) {
+		 offerRepository.deleteById(offerId);		
+	}
 }

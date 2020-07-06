@@ -99,7 +99,7 @@ public class OfferControllerTest {
 		MvcResult result = mockMvc.perform(request).andReturn();
 
 		MockHttpServletResponse response = result.getResponse();
-		String expectedResult = "{\"offerId\":2,\"offerPercentage\":20.0,\"offerCategory\":\"Electronices\",\"validUpto\":\"2020-07-02\",\"result\":true,\"validFrom\":\"2020-07-02\"}";
+		String expectedResult = "{\"offerId\":2,\"offerPercentage\":20.0,\"offerCategory\":\"Electronices\",\"validUpto\":\"2020-07-03\",\"result\":true,\"validFrom\":\"2020-07-03\"}";
 
 		assertTrue(response.getContentAsString().contains(expectedResult));
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -116,7 +116,7 @@ public class OfferControllerTest {
 		MvcResult result = mockMvc.perform(request).andReturn();
 
 		MockHttpServletResponse response = result.getResponse();
-		String expectedResult = "{\"offers\":[{\"offerId\":2,\"offerPercentage\":20.0,\"offerCategory\":\"Electronices\",\"validUpto\":{\"year\":2020,\"month\":7,\"day\":2},\"ValidFrom\":{\"year\":2020,\"month\":7,\"day\":2}}]}";
+		String expectedResult = "{\"offers\":[{\"offerId\":2,\"offerPercentage\":20.0,\"offerCategory\":\"Electronices\",\"validUpto\":{\"year\":2020,\"month\":7,\"day\":3},\"ValidFrom\":{\"year\":2020,\"month\":7,\"day\":3}}]}";
 
 		assertEquals(expectedResult,response.getContentAsString());
 		assertEquals(HttpStatus.OK.value(), response.getStatus());

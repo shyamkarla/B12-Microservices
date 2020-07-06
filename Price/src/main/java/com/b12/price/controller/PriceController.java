@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.b12.price.constant.AllConstant;
 import com.b12.price.dto.OfferResponse;
+import com.b12.price.dto.PriceDTO;
 import com.b12.price.dto.PriceResponse;
 import com.b12.price.dto.Response;
 import com.b12.price.entity.Price;
 import com.b12.price.service.OfferService;
 import com.b12.price.service.PriceService;
+import com.google.gson.Gson;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,17 +41,17 @@ public class PriceController {
 	@Autowired
 	private OfferService offerService;
 
-	@ApiOperation(value = "get a price details for a product", response = PriceResponse.class, tags = "GetProductPrice")
+	@ApiOperation(value = "get a price details for a product", response = PriceResponse.class, tags = "GetProductPrice",produces = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully calculated the Product Price"),
 			@ApiResponse(code = 400, message = "Invalid Request"),
 			@ApiResponse(code = 500, message = "Internal Server Error"),
 			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
-	@GetMapping(value = "/{priceIdStr}", produces = "application/json")
-	public ResponseEntity<Object> getProductPrice(@PathVariable String priceIdStr) {
+	@GetMapping(value = "/{priceId}", produces = "application/json")
+	public ResponseEntity<Object> getProductPrice(@PathVariable Long priceId) {
 		ResponseEntity<Object> responseEntity = null;
 		Price price = null;
-		if (priceIdStr != null && priceIdStr.length() > 0 && priceIdStr.matches("\\d+")) {
-			price = priceService.getPriceDetails(Long.parseLong(priceIdStr));
+		if (priceId > 0) {
+			price = priceService.getPriceDetails(priceId);
 		} else {
 			return new ResponseEntity<Object>(new Response(AllConstant.INVALID_PRICE_ID), HttpStatus.BAD_REQUEST);
 		}
@@ -68,6 +71,7 @@ public class PriceController {
 			OfferResponse offerResponse;
 			try {
 				offerResponse = offerService.getOfferDetails(price.getOfferId());
+				System.out.println("Received Offer.."+offerResponse);
 			} catch (Exception e) {
 				System.out.println("Offer Cant apply Now....Offer API Internal Server Error ");
 				offerResponse = null;
@@ -95,32 +99,34 @@ public class PriceController {
 		return new ResponseEntity<Object>(priceResponse, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "save a price details for a product", response = PriceResponse.class, tags = "AddProductPriceDetails")
+	@ApiOperation(value = "save a price details for a product", response = Price.class,produces = "application/json", consumes = "application/json", tags = "AddProductPriceDetails")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully added the Product Price details"),
 			@ApiResponse(code = 400, message = "Invalid Request"),
 			@ApiResponse(code = 500, message = "Internal Server Error"), })
 	@PostMapping(consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Response> addPriceDetails(@RequestBody Price price) {
+	public ResponseEntity<Object> addPriceDetails(@RequestBody PriceDTO price) {
 		if (price == null) {
-			return new ResponseEntity<Response>(new Response(AllConstant.INVALID_PRICE_DETAILS),
+			return new ResponseEntity<Object>(new Response(AllConstant.INVALID_PRICE_DETAILS),
 					HttpStatus.BAD_REQUEST);
 		}
-		priceService.addPriceDetails(price);
-		return new ResponseEntity<Response>(new Response(AllConstant.SUCCESS_RESPONSE), HttpStatus.OK);
+		Price returnedPrice = priceService.addPriceDetails(price);
+		return new ResponseEntity<Object>(returnedPrice, HttpStatus.OK);
 
 	}
 
-	@ApiOperation(value = "Get all price details for a product", response = List.class, tags = "GetAllPriceDetails")
+	@ApiOperation(value = "Get all price details for a product",produces = "application/json", response = List.class, tags = "GetAllPriceDetails")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully Sending all price details"),
 			@ApiResponse(code = 500, message = "Internal Server Error"), })
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<String> getAllPriceDetails() {
 		List<Price> allPrice = priceService.getAll();
-		return new ResponseEntity<String>("{\"priceDetails\":" + allPrice + "}", HttpStatus.OK);
+		 Gson gson = new Gson();
+		 String jsonPrices = gson.toJson(allPrice);
+		return new ResponseEntity<String>("{\"priceDetails\":" + jsonPrices + "}", HttpStatus.OK);
 
 	}
 
-	@ApiOperation(value = "modify a price details for a product", response = Price.class, tags = "UpdatePriceDetails")
+	@ApiOperation(value = "modify a price details for a product", response = Price.class,produces = "application/json", consumes = "application/json", tags = "UpdatePriceDetails")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully modified Price details"),
 			@ApiResponse(code = 400, message = "Invalid Request"),
 			@ApiResponse(code = 500, message = "Internal Server Error"),
@@ -134,8 +140,24 @@ public class PriceController {
 			priceReturned.setProductPrice(
 					price.getProductPrice() != null ? price.getProductPrice() : priceReturned.getProductPrice());
 
-			Price newPrice = priceService.addPriceDetails(priceReturned);
+			Price newPrice = priceService.updatePriceDetails(priceReturned);
 			return new ResponseEntity<Object>(newPrice, HttpStatus.OK);
+		}
+		return new ResponseEntity<Object>(new Response(AllConstant.INVALID_PRICE_ID), HttpStatus.NOT_FOUND);
+	}
+
+	@ApiOperation(value = "delete a price details for a product", tags = "DeletePriceDetails")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully deleted Price details"),
+			@ApiResponse(code = 400, message = "Invalid Request"),
+			@ApiResponse(code = 500, message = "Internal Server Error"),
+			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
+	@DeleteMapping(value = "/{priceId}", produces = "application/json")
+	public ResponseEntity<Object> deleteOfferDetails(@PathVariable Long priceId) {
+		if (priceId > 0) {
+			 priceService.deletePriceDetails(priceId);
+			 Long offerId = priceService.getPriceDetails(priceId).getOfferId();
+			 offerService.deleteOfferDetails(offerId);
+			return new ResponseEntity<Object>(new Response(AllConstant.DELETE_MESSAGE), HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>(new Response(AllConstant.INVALID_PRICE_ID), HttpStatus.NOT_FOUND);
 	}

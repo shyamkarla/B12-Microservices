@@ -71,9 +71,15 @@ public class OfferController {
 	})
 	@PostMapping(value = "/",produces = "application/json")
 	public ResponseEntity<OfferResponse> addOffer(@RequestBody Offer offer){
-		offerService.addOffer(offer);
+		Offer offerReturned = offerService.addOffer(offer);
 		OfferResponse response =new OfferResponse();
 		response.setMessage(AllConstant.ADDED_SUCCESSFULLY);
+		response.setOfferCategory(offerReturned.getOfferCategory());
+		response.setOfferId(offerReturned.getOfferId());
+		response.setOfferPercentage(offerReturned.getOfferPercentage());
+		response.setValidFrom(offer.getValidFrom());
+		response.setValidUpto(offer.getValidUpto());
+		response.setResult(true);
 		return new ResponseEntity<OfferResponse>(response, HttpStatus.OK);
 		
 	}
@@ -125,5 +131,28 @@ public class OfferController {
 			response =  new ResponseEntity<OfferResponse>(offerResponse, HttpStatus.BAD_REQUEST);
 		}
 		return response;
+	}
+
+	@ApiOperation(value = "delete a offer details for a product", response = OfferResponse.class, tags = "DeleteOfferDetails")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = "Successfully deleted Offer details"),
+	        @ApiResponse(code = 400, message = "Invalid Request"),
+	        @ApiResponse(code = 500, message = "Internal Server Error"),
+	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	})
+	@GetMapping(value ="/{offerId}",produces = "application/json")
+	public ResponseEntity<OfferResponse> deleteOffer(@PathVariable Long offerId){
+		OfferResponse offerResponse = new OfferResponse();
+		ResponseEntity<OfferResponse> response = null;
+		if( offerId != null && offerId>0)
+		{
+			offerService.deleteOffer(offerId);
+			
+			offerResponse.setMessage(AllConstant.DELETED_SUCCESSFULLY);
+			offerResponse.setResult(false);
+			//response =  new ResponseEntity<OfferResponse>(offerResponse, HttpStatus.DELETED_SUCCESSFULLY);
+		}
+		return response;
+		
 	}
 }

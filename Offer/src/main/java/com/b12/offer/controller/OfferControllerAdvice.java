@@ -16,13 +16,13 @@ import com.b12.offer.dto.OfferResponse;
 public class OfferControllerAdvice {
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<OfferResponse> handleEntityNotFoundException(Exception e){
+	public ResponseEntity<String> handleEntityNotFoundException(Exception e){
 		OfferResponse response = new OfferResponse();
 		response.setResult(false);
 		response.setMessage(AllConstant.OFFER_ID_NOT_FOUND);
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
-		return new ResponseEntity<OfferResponse>(response,headers,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<String>("{\"message\": \"Offer ID not found in DB\"}",headers,HttpStatus.NOT_FOUND);
 	}
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<OfferResponse> handleException(Exception e){
