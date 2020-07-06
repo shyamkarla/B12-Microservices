@@ -31,7 +31,10 @@ public class OfferService {
 		
 	}
 
+
 	public void deleteOffer(long offerId) {
 		 offerRepository.deleteById(offerId);		
 	}
+
+
 }

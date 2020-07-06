@@ -132,6 +132,7 @@ public class OfferController {
 		}
 		return response;
 	}
+<<<<<<< HEAD
 
 	@ApiOperation(value = "delete a offer details for a product", response = OfferResponse.class, tags = "DeleteOfferDetails")
 	@ApiResponses(value = {
@@ -155,4 +156,6 @@ public class OfferController {
 		return response;
 		
 	}
+=======
+>>>>>>> 93f671b5c5470e5eeb1a89c00a02fcfd9fd72fb9
 }
