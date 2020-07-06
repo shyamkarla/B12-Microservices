@@ -1,4 +1,4 @@
-package com.b12.inventory.inventoryService.repository;
+package com.b12.inventory.InventoryService.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.b12.inventory.inventoryService.model.Inventory;
+import com.b12.inventory.inventoryService.repository.InventoryRepository;
 
 
 @SpringBootTest

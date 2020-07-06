@@ -1,4 +1,4 @@
-package com.b12.inventory.inventoryService.service;
+package com.b12.inventory.InventoryService.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;

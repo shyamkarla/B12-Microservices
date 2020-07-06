@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  eureka:
+    build:
+      context: .
+      dockerfile: Dockerfile-eureka   
+    ports:
+      - "8761:8761"
+    restart: on-failure
+  zuul:
+    build:
+      context: .
+      dockerfile: Dockerfile-zuul
+    ports:
+      - "8763:8763"
+    restart: on-failure
+    depends_on:
+      - eureka
+
+  configserver:
+    image: configserver
+    ports:
+      - "8888:8888"
+    restart: on-failure
+    depends_on:
+      - eureka
+
